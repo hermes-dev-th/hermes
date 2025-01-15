@@ -3,10 +3,15 @@ const app = express()
 
 const port = 8000
 
-app.get('/', (req ,res) =>{
+app.get('/test', (req ,res) =>{
     res.send("Hello Hermes")
 })
 
 app.listen(port , (req , res) =>{
     console.log(`Server start at http://localhost:${port}`);
 })
+
+app.get('/',(req ,res) =>{
+    res.send()
+})
+
