@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
- main
 
 
 // Rate limiting configuration

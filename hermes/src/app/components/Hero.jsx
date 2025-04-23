@@ -1,57 +1,50 @@
-"use client";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { useState, useEffect } from "react";
-
-export default function Hero({ scrollContainerRef }) {
-  const [titleSize, setTitleSize] = useState(5.2); // Default size in vw
-  const [subtitleSize, setSubtitleSize] = useState(1.8); // Default size in vw
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!scrollContainerRef?.current) return;
-
-      const currentScrollY = scrollContainerRef.current.scrollTop; // Get scroll position
-
-      if (currentScrollY > lastScrollY) {
-        // Scrolling down: Reduce text size
-        setTitleSize((prev) => Math.max(prev - 0.1, 3.2)); // Min title size
-        setSubtitleSize((prev) => Math.max(prev - 0.05, 1.2)); // Min subtitle size
-      } else if (currentScrollY < lastScrollY) {
-        // Scrolling up: Increase text size
-        setTitleSize((prev) => Math.min(prev + 0.1, 5.2)); // Max title size
-        setSubtitleSize((prev) => Math.min(prev + 0.05, 1.8)); // Max subtitle size
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    const scrollDiv = scrollContainerRef?.current;
-    if (scrollDiv) {
-      scrollDiv.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (scrollDiv) {
-        scrollDiv.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [lastScrollY, scrollContainerRef]);
-
+const Hero = () => {
   return (
-    <div className="w-full flex flex-col justify-center items-center my-[3vw] sticky top-[10vh]">
-      <h1
-        className="font-bold my-[-1vw] transition-all duration-800"
-        style={{ fontSize: `${titleSize}vw` }}
-      >
-        Empower the Business
-      </h1>
-      <p
-        className="font-light transition-all duration-800"
-        style={{ fontSize: `${subtitleSize}vw` }}
-      >
-        Transform Your Business with Innovative Web Solutions
-      </p>
-    </div>
+    <section className="w-full py-20 bg-white text-black overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight mb-6">
+            <span className="block">Simplicity is the</span>
+            <span className="block">ultimate sophistication</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+            Experience the perfect blend of elegance and functionality with Hermes.
+          </p>
+        </div>
+        
+        <div className="relative">
+          <div className="aspect-video w-full max-w-5xl mx-auto">
+            <Image
+              src="/images/hero-product.jpg"
+              alt="Hermes flagship product"
+              fill
+              className="object-cover rounded-lg shadow-lg"
+              priority
+            />
+          </div>
+        </div>
+        
+        <div className="flex justify-center gap-6 mt-12">
+          <Link 
+            href="#services-section" 
+            className="bg-black text-white px-8 py-3 rounded-full text-lg font-medium hover:opacity-90 transition-opacity"
+          >
+            Explore
+          </Link>
+          <Link 
+            href="#footer-section" 
+            className="bg-transparent border border-gray-300 px-8 py-3 rounded-full text-lg font-medium hover:bg-gray-50 transition-colors"
+          >
+            Learn more
+          </Link>
+        </div>
+      </div>
+    </section>
   );
-}
+};
+
+export default Hero;
