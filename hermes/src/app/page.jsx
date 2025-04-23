@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Hero from "@/app/components/Hero.jsx";
-import Button from "@/app/components/Button.jsx";
 import ServicesPage from "@/app/components/ServicesPage.jsx";
 import Pricing from "@/app/components/Pricing.jsx";
 import Contact from "@/app/components/Contact.jsx";
