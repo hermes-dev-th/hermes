@@ -5,7 +5,7 @@ acceptLanguage.languages(['en', 'th']);
 
 export const config = {
   // Only run on specific paths, skip static files like images, etc.
-  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|images|sukhumvit-font|locales|lib|favicon.ico).*)'],
 };
 
 const cookieName = 'NEXT_LOCALE';
@@ -22,6 +22,14 @@ export function middleware(request) {
 
   // If pathname already has locale, return
   if (pathnameHasLocale) return;
+
+  // Skip redirects for static assets
+  if (pathname.includes('sukhumvit-font') || 
+      pathname.includes('images') || 
+      pathname.includes('locales') ||
+      pathname.includes('lib')) {
+    return;
+  }
 
   // Get locale from cookie or accept-language header
   let locale;

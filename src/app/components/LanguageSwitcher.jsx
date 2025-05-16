@@ -2,14 +2,14 @@
 
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLanguage } from '../ClientWrapper';
+import { useTranslation } from '../../lib/useTranslation';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 
 const LanguageSwitcher = () => {
   const router = useRouter();
-  const { t, i18n } = useTranslation('common');
-  const currentLocale = i18n.language;
+  const { t, locale } = useTranslation();
+  const { setLocale } = useLanguage();
   const pathname = usePathname();
 
   // Get the path without the locale
@@ -26,8 +26,9 @@ const LanguageSwitcher = () => {
 
   const pathWithoutLocale = getPathWithoutLocale(pathname);
 
-  const changeLanguage = (locale) => {
-    const path = `/${locale}${pathWithoutLocale || ''}`;
+  const changeLanguage = (newLocale) => {
+    setLocale(newLocale);
+    const path = `/${newLocale}${pathWithoutLocale || ''}`;
     router.push(path);
   };
 
@@ -48,7 +49,7 @@ const LanguageSwitcher = () => {
             d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
           />
         </svg>
-        <span>{currentLocale === 'th' ? 'ไทย' : 'English'}</span>
+        <span>{locale === 'th' ? 'ไทย' : 'English'}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-4 w-4"
@@ -69,24 +70,24 @@ const LanguageSwitcher = () => {
           <button
             onClick={() => changeLanguage('en')}
             className={`block w-full px-4 py-2 text-left text-sm ${
-              currentLocale === 'en'
+              locale === 'en'
                 ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white'
                 : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
             }`}
             role="menuitem"
           >
-            English
+            {t('language.en')}
           </button>
           <button
             onClick={() => changeLanguage('th')}
             className={`block w-full px-4 py-2 text-left text-sm ${
-              currentLocale === 'th'
+              locale === 'th'
                 ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white'
                 : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
             }`}
             role="menuitem"
           >
-            ไทย
+            {t('language.th')}
           </button>
         </div>
       </div>

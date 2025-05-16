@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from '../../lib/useTranslation';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import ServicesPage from '../components/ServicesPage';

@@ -1,9 +1,7 @@
 import "./globals.css";
-import ScrollToTopOnRefresh from './components/ScrollToTopOnRefresh'
 import Script from 'next/script'
-import { appWithTranslation } from 'next-i18next'
-import { useEffect } from 'react'
-import initI18n from '../lib/i18n'
+import ClientWrapper from './ClientWrapper'
+import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'Hermes-Dev | Software Development Solutions',
@@ -88,22 +86,18 @@ export const viewport = {
   ],
 };
 
-function AppWithI18n({ children, lang }) {
-  useEffect(() => {
-    // Initialize i18n when the component mounts
-    const setupI18n = async () => {
-      await initI18n();
-    };
-    
-    setupI18n();
-  }, []);
-
-  return children;
-}
-
-function RootLayout({ children, params }) {
-  // Get the locale from the params
-  const locale = params?.locale || 'en';
+export default function RootLayout({ children, params }) {
+  // For top-level layout, params might not have locale directly
+  // Let's extract it from the URL path via headers
+  const headersList = headers();
+  const headerUrl = headersList.get('x-url') || '';
+  const urlPath = headerUrl.split('?')[0] || '';
+  const pathParts = urlPath.split('/').filter(Boolean);
+  
+  // Check if the first part is a locale
+  const locale = params?.locale || 
+                (pathParts.length > 0 && ['en', 'th'].includes(pathParts[0]) ? 
+                 pathParts[0] : 'en');
   
   return (
     <html lang={locale} className="scroll-smooth">
@@ -118,13 +112,10 @@ function RootLayout({ children, params }) {
         />
       </head>
       <body className="font-sukhumvit antialiased bg-white text-gray-900 min-h-screen flex flex-col">
-        <ScrollToTopOnRefresh />
-        <AppWithI18n lang={locale}>
-          <main className="flex-grow">{children}</main>
-        </AppWithI18n>
+        <ClientWrapper locale={locale}>
+          {children}
+        </ClientWrapper>
       </body>
     </html>
   );
 }
-
-export default appWithTranslation(RootLayout);

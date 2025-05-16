@@ -2,12 +2,12 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from '../../lib/useTranslation';
 
 const Hero = ({ scrollContainerRef }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkDevice = () => {

@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from '../../lib/useTranslation';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar({ activeSection, scrollToSection }) {
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   
   const navigationItems = [
     { name: t('nav.home'), section: "hero-section", ariaLabel: "Go to home section" },

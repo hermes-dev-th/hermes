@@ -1,9 +1,6 @@
-import { resolve } from 'path';
-import i18nConfig from './next-i18next.config.js';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n: i18nConfig.i18n,
+  // We're using App Router's built-in i18n support instead
 };
 
 export default nextConfig;
