@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar({ activeSection, scrollToSection }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -9,10 +9,10 @@ export default function Navbar({ activeSection, scrollToSection }) {
   const [isScrolled, setIsScrolled] = useState(false);
   
   const navigationItems = [
-    { name: "Home", section: "hero-section" },
-    { name: "Services", section: "services-section" },
-    { name: "Pricing", section: "pricing-section" },
-    { name: "Contact", section: "contact-section" }
+    { name: "Home", section: "hero-section", ariaLabel: "Go to home section" },
+    { name: "Services", section: "services-section", ariaLabel: "View our services" },
+    { name: "Pricing", section: "pricing-section", ariaLabel: "Check our pricing" },
+    { name: "Contact", section: "contact-section", ariaLabel: "Contact us" }
   ];
   
   // ตรวจสอบขนาดหน้าจอและการ scroll
@@ -56,17 +56,23 @@ export default function Navbar({ activeSection, scrollToSection }) {
             ? "backdrop-blur-lg bg-white/80 shadow-sm border-b border-gray-100" 
             : "backdrop-blur-md bg-white/30"
         }`}
+        role="banner"
       >
         <div className="max-w-6xl mx-auto">
           {/* Desktop & Mobile Navigation */}
           <div className={`flex justify-between items-center ${isMobile ? "p-4" : "px-10 py-4"}`}>
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <img 
-                src="/images/Only-Hermes-Dev-Logo.png" 
-                className={`transition-all ${isMobile ? "h-6" : "h-7"}`} 
-                alt="Hermes Logo" 
-              />
+              <div className="relative">
+                <Image 
+                  src="/images/Only-Hermes-Dev-Logo.png" 
+                  width={28}
+                  height={28}
+                  className={`transition-all ${isMobile ? "w-6 h-6" : "w-7 h-7"}`} 
+                  alt="Hermes Logo" 
+                  priority
+                />
+              </div>
               <span className={`font-medium text-gray-800 tracking-tight ${isMobile ? "text-sm" : "text-base"}`}>
                 Hermes Dev
               </span>
@@ -74,12 +80,14 @@ export default function Navbar({ activeSection, scrollToSection }) {
 
             {/* Desktop Navigation */}
             {!isMobile && (
-              <nav className="flex items-center gap-8">
+              <nav className="flex items-center gap-8" role="navigation" aria-label="Main Navigation">
                 {navigationItems.map((item) => (
                   <button 
                     key={item.name}
                     onClick={() => scrollToSection(item.section)}
                     className={`relative text-sm py-1 tracking-wide transition-colors group`}
+                    aria-label={item.ariaLabel}
+                    aria-current={activeSection === item.section ? "page" : undefined}
                   >
                     <span className={`${
                       activeSection === item.section 
@@ -96,6 +104,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
                           ? "bg-black scale-x-100" 
                           : "bg-gray-400 scale-x-0 group-hover:scale-x-100"
                       }`}
+                      aria-hidden="true"
                     />
                   </button>
                 ))}
@@ -107,6 +116,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
               <button 
                 onClick={() => scrollToSection("contact-section")}
                 className="bg-black text-white text-sm px-5 py-2 rounded-full hover:bg-gray-800 transition-colors"
+                aria-label="Contact us now"
               >
                 Get in Touch
               </button>
@@ -118,6 +128,8 @@ export default function Navbar({ activeSection, scrollToSection }) {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-gray-800 p-1 focus:outline-none"
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-menu"
               >
                 <motion.svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -127,6 +139,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
                   stroke="currentColor"
                   animate={{ rotate: isMenuOpen ? 90 : 0 }}
                   transition={{ duration: 0.3 }}
+                  aria-hidden="true"
                 >
                   <path 
                     strokeLinecap="round" 
@@ -145,11 +158,14 @@ export default function Navbar({ activeSection, scrollToSection }) {
       <AnimatePresence>
         {isMobile && isMenuOpen && (
           <motion.nav 
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-x-0 top-[65px] z-40 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-lg"
+            role="navigation"
+            aria-label="Mobile Navigation"
           >
             <div className="flex flex-col py-2">
               {navigationItems.map((item) => (
@@ -161,6 +177,8 @@ export default function Navbar({ activeSection, scrollToSection }) {
                       ? "text-black font-medium" 
                       : "text-gray-600"
                   }`}
+                  aria-label={item.ariaLabel}
+                  aria-current={activeSection === item.section ? "page" : undefined}
                 >
                   {item.name}
                 </button>
@@ -169,6 +187,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
                 <button 
                   onClick={() => handleMenuClick("contact-section")}
                   className="bg-black text-white w-full text-center py-3 rounded-full hover:bg-gray-800 transition-colors"
+                  aria-label="Contact us now"
                 >
                   Get in Touch
                 </button>

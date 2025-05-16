@@ -1,6 +1,7 @@
 "use client";
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 const Hero = ({ scrollContainerRef }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -89,15 +90,23 @@ const Hero = ({ scrollContainerRef }) => {
           className="relative mt-4 sm:mt-8"
           variants={fadeInUp}
         >
-          <div className="aspect-[16/9] w-full max-w-5xl mx-auto rounded-lg overflow-hidden shadow-xl">
-            <motion.img
-              src="/images/hero-product.jpg"
-              alt="Hermes flagship product"
-              className="w-full h-full object-cover"
+          <div className="aspect-[16/9] w-full max-w-5xl mx-auto rounded-lg overflow-hidden shadow-xl relative">
+            <motion.div
+              className="w-full h-full"
               initial={{ scale: 1.05, opacity: 0.9 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1.5 }}
-            />
+            >
+              <Image
+                src="/images/hero-product.jpg"
+                alt="Hermes flagship product"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
+                className="object-cover"
+                priority={true}
+                quality={90}
+              />
+            </motion.div>
             
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
@@ -114,6 +123,7 @@ const Hero = ({ scrollContainerRef }) => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             variants={fadeInUp}
+            aria-label="Explore our services"
           >
             Explore Services
           </motion.button>
@@ -123,6 +133,7 @@ const Hero = ({ scrollContainerRef }) => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             variants={fadeInUp}
+            aria-label="Contact our team"
           >
             Contact Us
           </motion.button>

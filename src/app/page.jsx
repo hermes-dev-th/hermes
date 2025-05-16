@@ -1,18 +1,31 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import Hero from "@/app/components/Hero.jsx";
-import ServicesPage from "@/app/components/ServicesPage.jsx";
-import Pricing from "@/app/components/Pricing.jsx";
-import Contact from "@/app/components/Contact.jsx";
-import Footer from "@/app/components/Footer";
+import { useState, useEffect, useRef, Suspense, lazy } from "react";
 import Navbar from "@/app/components/Navbar";
+import Hero from "@/app/components/Hero.jsx";
 import ScrollToTopOnRefresh from "@/app/components/ScrollToTopOnRefresh";
 import { motion } from "framer-motion";
+
+// Lazy load components ที่ใหญ่และไม่จำเป็นสำหรับการแสดงผลครั้งแรก
+const ServicesPage = lazy(() => import("@/app/components/ServicesPage.jsx"));
+const Pricing = lazy(() => import("@/app/components/Pricing.jsx"));
+const Contact = lazy(() => import("@/app/components/Contact.jsx"));
+const Footer = lazy(() => import("@/app/components/Footer"));
+
+// Loading placeholders สำหรับ lazy-loaded components
+const LoadingSection = ({ height = "min-h-screen", text = "Loading..." }) => (
+  <div className={`${height} flex items-center justify-center`}>
+    <div className="flex flex-col items-center space-y-4">
+      <div className="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
+      <p className="text-gray-500">{text}</p>
+    </div>
+  </div>
+);
 
 export default function Home() {
   const scrollContainerRef = useRef(null);
   const [logoOpacity, setLogoOpacity] = useState(1);
   const [activeSection, setActiveSection] = useState("hero-section");
+  const [hasScrolled, setHasScrolled] = useState(false);
   
   const handleScroll = () => {
     if (!scrollContainerRef?.current) return;
@@ -29,6 +42,11 @@ export default function Home() {
     } else {
       const newOpacity = 1 - scrollProgress * 3;
       setLogoOpacity(Math.max(0, newOpacity));
+    }
+    
+    // ตรวจสอบว่าผู้ใช้ได้เลื่อนหน้าจอหรือยัง
+    if (scrollTop > 10 && !hasScrolled) {
+      setHasScrolled(true);
     }
     
     const sections = ["hero-section", "services-section", "pricing-section", "contact-section"];
@@ -54,7 +72,7 @@ export default function Home() {
         scrollDiv.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [hasScrolled]);
   
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -63,6 +81,9 @@ export default function Home() {
         top: element.offsetTop,
         behavior: 'smooth'
       });
+      if (!hasScrolled) {
+        setHasScrolled(true);
+      }
     }
   };
 
@@ -82,19 +103,27 @@ export default function Home() {
         </section>
 
         <section className="snap-start min-h-screen flex items-center px-6" id="services-section">
-          <ServicesPage />
+          <Suspense fallback={<LoadingSection text="Loading services..." />}>
+            <ServicesPage />
+          </Suspense>
         </section>
 
         <section className="snap-start min-h-screen flex items-center px-6" id="pricing-section">
-          <Pricing />
+          <Suspense fallback={<LoadingSection text="Loading pricing information..." />}>
+            <Pricing />
+          </Suspense>
         </section>
 
         <section className="snap-start min-h-screen mx-auto items-center px-6" id="contact-section">
-          <Contact />
+          <Suspense fallback={<LoadingSection text="Loading contact form..." />}>
+            <Contact />
+          </Suspense>
         </section>
         
         <section className="snap-start pt-12 bg-gray-50/50" id="footer-section">
-          <Footer />
+          <Suspense fallback={<LoadingSection height="min-h-[300px]" text="Loading footer..." />}>
+            <Footer />
+          </Suspense>
         </section>
       </div>
     </>
