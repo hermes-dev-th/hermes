@@ -8,9 +8,13 @@ import ServicesPage from '../components/ServicesPage';
 import Pricing from '../components/Pricing';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
+import { use } from 'react';
 
 export default function Home({ params }) {
-  const { locale } = params;
+  // Unwrap params using React.use()
+  const unwrappedParams = use(params);
+  const { locale } = unwrappedParams;
+  
   const [activeSection, setActiveSection] = useState('hero-section');
   const scrollContainerRef = useRef(null);
   const sectionRefs = {

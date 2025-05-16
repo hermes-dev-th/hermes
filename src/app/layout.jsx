@@ -1,7 +1,7 @@
 import "./globals.css";
 import Script from 'next/script'
 import ClientWrapper from './ClientWrapper'
-import { headers } from 'next/headers';
+import { use } from 'react';
 
 export const metadata = {
   title: 'Hermes-Dev | Software Development Solutions',
@@ -54,10 +54,6 @@ export const metadata = {
       url: '/images/Only-Hermes-Dev-Logo.png',
     },
   },
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: '#1a1a1a' },
-  ],
   alternates: {
     canonical: 'https://hermes.dev',
     languages: {
@@ -88,16 +84,9 @@ export const viewport = {
 
 export default function RootLayout({ children, params }) {
   // For top-level layout, params might not have locale directly
-  // Let's extract it from the URL path via headers
-  const headersList = headers();
-  const headerUrl = headersList.get('x-url') || '';
-  const urlPath = headerUrl.split('?')[0] || '';
-  const pathParts = urlPath.split('/').filter(Boolean);
-  
-  // Check if the first part is a locale
-  const locale = params?.locale || 
-                (pathParts.length > 0 && ['en', 'th'].includes(pathParts[0]) ? 
-                 pathParts[0] : 'en');
+  // We'll use simpler approach by checking if params has locale
+  const unwrappedParams = use(params);
+  const locale = unwrappedParams?.locale || 'en';
   
   return (
     <html lang={locale} className="scroll-smooth">
@@ -108,8 +97,40 @@ export default function RootLayout({ children, params }) {
         <Script 
           id="analytics" 
           strategy="afterInteractive"
-          src="/lib/analytics.js"
-        />
+        >
+          {`
+            function sendToAnalytics(metric) {
+              const body = JSON.stringify(metric);
+              const url = '/api/analytics';
+              
+              if (navigator.sendBeacon) {
+                navigator.sendBeacon(url, body);
+              } else {
+                fetch(url, {
+                  body,
+                  method: 'POST',
+                  keepalive: true,
+                }).catch(error => {
+                  console.error('Error sending web-vitals data:', error);
+                });
+              }
+            }
+            
+            // Try to load web-vitals if needed
+            try {
+              import('web-vitals').then(({ onCLS, onFID, onLCP, onTTFB, onINP }) => {
+                onCLS(sendToAnalytics);
+                onFID(sendToAnalytics);
+                onLCP(sendToAnalytics);
+                onTTFB(sendToAnalytics);
+                onINP(sendToAnalytics);
+                console.log('Web Vitals reporting initialized');
+              });
+            } catch (err) {
+              console.error('Failed to initialize web-vitals reporting:', err);
+            }
+          `}
+        </Script>
       </head>
       <body className="font-sukhumvit antialiased bg-white text-gray-900 min-h-screen flex flex-col">
         <ClientWrapper locale={locale}>
