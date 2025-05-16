@@ -2,17 +2,20 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useTranslation } from 'next-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar({ activeSection, scrollToSection }) {
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { t } = useTranslation('common');
   
   const navigationItems = [
-    { name: "Home", section: "hero-section", ariaLabel: "Go to home section" },
-    { name: "Services", section: "services-section", ariaLabel: "View our services" },
-    { name: "Pricing", section: "pricing-section", ariaLabel: "Check our pricing" },
-    { name: "Contact", section: "contact-section", ariaLabel: "Contact us" }
+    { name: t('nav.home'), section: "hero-section", ariaLabel: "Go to home section" },
+    { name: t('nav.services'), section: "services-section", ariaLabel: "View our services" },
+    { name: t('nav.pricing'), section: "pricing-section", ariaLabel: "Check our pricing" },
+    { name: t('nav.contact'), section: "contact-section", ariaLabel: "Contact us" }
   ];
   
   // ตรวจสอบขนาดหน้าจอและการ scroll
@@ -108,6 +111,11 @@ export default function Navbar({ activeSection, scrollToSection }) {
                     />
                   </button>
                 ))}
+                
+                {/* Language Switcher for Desktop */}
+                <div className="ml-2">
+                  <LanguageSwitcher />
+                </div>
               </nav>
             )}
             
@@ -118,37 +126,42 @@ export default function Navbar({ activeSection, scrollToSection }) {
                 className="bg-black text-white text-sm px-5 py-2 rounded-full hover:bg-gray-800 transition-colors"
                 aria-label="Contact us now"
               >
-                Get in Touch
+                {t('hero.cta')}
               </button>
             )}
             
             {/* Mobile Menu Button */}
             {isMobile && (
-              <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-800 p-1 focus:outline-none"
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMenuOpen}
-                aria-controls="mobile-menu"
-              >
-                <motion.svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                  animate={{ rotate: isMenuOpen ? 90 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  aria-hidden="true"
+              <div className="flex items-center gap-4">
+                {/* Language Switcher for Mobile */}
+                <LanguageSwitcher />
+                
+                <button 
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="text-gray-800 p-1 focus:outline-none"
+                  aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                  aria-expanded={isMenuOpen}
+                  aria-controls="mobile-menu"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={1.5} 
-                    d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
-                  />
-                </motion.svg>
-              </button>
+                  <motion.svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-6 w-6" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                    animate={{ rotate: isMenuOpen ? 90 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    aria-hidden="true"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={1.5} 
+                      d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
+                    />
+                  </motion.svg>
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -189,7 +202,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
                   className="bg-black text-white w-full text-center py-3 rounded-full hover:bg-gray-800 transition-colors"
                   aria-label="Contact us now"
                 >
-                  Get in Touch
+                  {t('hero.cta')}
                 </button>
               </div>
             </div>

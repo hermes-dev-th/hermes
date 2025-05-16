@@ -2,10 +2,12 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
 
 const Hero = ({ scrollContainerRef }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     const checkDevice = () => {
@@ -69,13 +71,13 @@ const Hero = ({ scrollContainerRef }) => {
               className="block"
               variants={fadeInUp}
             >
-              Simplicity is the
+              {t('hero.title')}
             </motion.span>
             <motion.span 
               className="block bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent"
               variants={fadeInUp}
             >
-              ultimate sophistication
+              {t('hero.subtitle')}
             </motion.span>
           </motion.h1>
           <motion.p 
@@ -125,7 +127,7 @@ const Hero = ({ scrollContainerRef }) => {
             variants={fadeInUp}
             aria-label="Explore our services"
           >
-            Explore Services
+            {t('services.title')}
           </motion.button>
           <motion.button
             onClick={() => handleScroll('contact-section')} 
@@ -135,7 +137,7 @@ const Hero = ({ scrollContainerRef }) => {
             variants={fadeInUp}
             aria-label="Contact our team"
           >
-            Contact Us
+            {t('contact.title')}
           </motion.button>
         </motion.div>
         

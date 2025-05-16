@@ -1,6 +1,9 @@
 import "./globals.css";
 import ScrollToTopOnRefresh from './components/ScrollToTopOnRefresh'
 import Script from 'next/script'
+import { appWithTranslation } from 'next-i18next'
+import { useEffect } from 'react'
+import initI18n from '../lib/i18n'
 
 export const metadata = {
   title: 'Hermes-Dev | Software Development Solutions',
@@ -60,8 +63,8 @@ export const metadata = {
   alternates: {
     canonical: 'https://hermes.dev',
     languages: {
-      'en-US': 'https://hermes.dev/en-US',
-      'th-TH': 'https://hermes.dev/th-TH',
+      'en': 'https://hermes.dev/en',
+      'th': 'https://hermes.dev/th',
     },
   },
   verification: {
@@ -85,45 +88,43 @@ export const viewport = {
   ],
 };
 
-export default function RootLayout({ children }) {
+function AppWithI18n({ children, lang }) {
+  useEffect(() => {
+    // Initialize i18n when the component mounts
+    const setupI18n = async () => {
+      await initI18n();
+    };
+    
+    setupI18n();
+  }, []);
+
+  return children;
+}
+
+function RootLayout({ children, params }) {
+  // Get the locale from the params
+  const locale = params?.locale || 'en';
+  
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang={locale} className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <Script 
-          id="web-vitals" 
+          id="analytics" 
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              function sendToAnalytics(metric) {
-                const body = JSON.stringify(metric);
-                const url = 'https://your-analytics-endpoint.com/analytics';
-                // Use navigator.sendBeacon() if available
-                if (navigator.sendBeacon) {
-                  navigator.sendBeacon(url, body);
-                } else {
-                  fetch(url, { body, method: 'POST', keepalive: true });
-                }
-              }
-              
-              // เก็บข้อมูล web vitals หลังจากหน้าเว็บโหลดเสร็จ
-              import('web-vitals').then(({ onCLS, onFID, onLCP, onTTFB, onINP }) => {
-                onCLS(sendToAnalytics);
-                onFID(sendToAnalytics);
-                onLCP(sendToAnalytics);
-                onTTFB(sendToAnalytics);
-                onINP(sendToAnalytics);
-              });
-            `
-          }}
+          src="/lib/analytics.js"
         />
       </head>
       <body className="font-sukhumvit antialiased bg-white text-gray-900 min-h-screen flex flex-col">
         <ScrollToTopOnRefresh />
-        <main className="flex-grow">{children}</main>
+        <AppWithI18n lang={locale}>
+          <main className="flex-grow">{children}</main>
+        </AppWithI18n>
       </body>
     </html>
   );
 }
+
+export default appWithTranslation(RootLayout);
