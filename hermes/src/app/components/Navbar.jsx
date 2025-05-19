@@ -10,7 +10,7 @@ const Navmenu = [
 ];
 
 export default function Navbar() {
-  const [activeSection, setActiveSection] = useState(null);
+  const [activeSection, setActiveSection] = useState("hero-section");
 
   useEffect(() => {
     const sectionIds = Navmenu.map((item) => item.section_id);
@@ -26,9 +26,6 @@ export default function Navbar() {
           }
         });
 
-        if (!anyVisible) {
-          setActiveSection(null); // Reset when no section is in view
-        }
       },
       { threshold: 0.6 }
     );
