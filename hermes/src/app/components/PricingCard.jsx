@@ -35,7 +35,7 @@ export default function PricingCard({ Title, Descript, Price, Website, Backend, 
                         </div>
 
                         <div className="flex items-center justify-center w-full mt-[1.5vw]">
-                            <img src={Image} alt="Image" className="h-[8vw] w-[8vw]"></img>
+                            <img src={Image} alt="Image" className="h-[8vw] w-[9vw]"></img>
                         </div>
 
                     </div>
