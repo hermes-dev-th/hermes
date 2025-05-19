@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export default function PricingCard({ Title, Descript, Price, Website, Backend, Maintenance, Dashboard, Admin, Image }) {
     const ServiceList = [
-        { text: 'Website', bool: Website , id:1 },
-        { text: 'Backend', bool: Backend , id:2 },
-        { text: 'Maintenance', bool: Maintenance , id:3 },
-        { text: 'Dashboard', bool: Dashboard , id:4 },
-        { text: 'Admin', bool: Admin , id:5 }
+        { text: 'Website', bool: Website, id:1 },
+        { text: 'Backend', bool: Backend, id:2 },
+        { text: 'Maintenance', bool: Maintenance, id:3 },
+        { text: 'Dashboard', bool: Dashboard, id:4 },
+        { text: 'Admin', bool: Admin, id:5 }
     ]
     return (
         <>
@@ -35,7 +35,7 @@ export default function PricingCard({ Title, Descript, Price, Website, Backend, 
                         </div>
 
                         <div className="flex items-center justify-center w-full mt-[1.5vw]">
-                            <img src={Image} alt="Image" className="h-[10vw] w-[10vw]"></img>
+                            <img src={Image} alt="Image" className="h-[8vw] w-[8vw]"></img>
                         </div>
 
                     </div>

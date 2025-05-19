@@ -8,7 +8,7 @@ export default function Service2() {
                     ใช้งานได้อย่างราบรื่นและปลอดภัย</p>
             </div>
             <div>
-                <img src="/images/FavIcon.png" alt="Image" className="h-[18vw]" />
+                <img src="/images/services/App_development_1.png" alt="Image" className="h-[16vw] m-[2vw]" />
             </div>
         </div>
     );
