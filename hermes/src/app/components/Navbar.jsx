@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 const Navmenu = [
-  { title: "About Us", section_id: "about" },
+  { title: "Home", section_id: "hero-section" },
   { title: "Services", section_id: "services-section" },
   { title: "Pricing", section_id: "pricing-section" },
   { title: "Contact Us", section_id: "contact-section" },
