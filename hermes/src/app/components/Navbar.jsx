@@ -3,14 +3,14 @@
 import { useState, useEffect } from "react";
 
 const Navmenu = [
-  { title: "About Us", section_id: "about" },
+  { title: "Home", section_id: "hero-section" },
   { title: "Services", section_id: "services-section" },
   { title: "Pricing", section_id: "pricing-section" },
   { title: "Contact Us", section_id: "contact-section" },
 ];
 
 export default function Navbar() {
-  const [activeSection, setActiveSection] = useState(null);
+  const [activeSection, setActiveSection] = useState("hero-section");
 
   useEffect(() => {
     const sectionIds = Navmenu.map((item) => item.section_id);
@@ -26,9 +26,6 @@ export default function Navbar() {
           }
         });
 
-        if (!anyVisible) {
-          setActiveSection(null); // Reset when no section is in view
-        }
       },
       { threshold: 0.6 }
     );

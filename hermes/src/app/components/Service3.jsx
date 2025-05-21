@@ -2,7 +2,7 @@ export default function Service3() {
     return (
         <div className="flex justify-center items-center w-screen ">
             <div>
-                <img src="/images/FavIcon.png" alt="Image" className="h-[18vw]" />
+                <img src="/images/services/Data Analysis.png" alt="Image" className="h-[14vw] m-[2vw]" />
             </div>
             <div className="flex flex-col w-[40vw]">
                 <h1 className="font-bold text-[1.8vw]">Data Analysis</h1>
