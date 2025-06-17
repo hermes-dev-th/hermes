@@ -8,9 +8,9 @@ export default function Pricing() {
             </div>
 
             <div className="flex justify-center gap-[5vw] w-full">
-                <PricingCard Title='Basic Blueprint' Descript='For those who need a simple webpage that is ready to use.' Price='~10,000' Website={true} Image='./images/price/Basic Bluprint.png'/>
-                <PricingCard Title='Dynamic Dashboard' Descript='For those who need a backend system for easy content management.' Price='~50,000' Website={true} Backend={true} Maintenance={true} Image='./images/price/Dynamic Dashboard.png'/>
-                <PricingCard Title='Ultimate Uptime' Descript='For those who need a fully-featured website with maintenance and support.' Price='~100,000' Website={true} Backend={true} Dashboard={true} Maintenance={true} Admin={true} Image='./images/price/Ultimate Uptime.png'/>
+                <PricingCard Title='Basic Blueprint' Descript='For those who need a simple webpage that is ready to use.' Price='~5,000' Website={true} Image='./images/price/Basic Bluprint.png'/>
+                <PricingCard Title='Dynamic Dashboard' Descript='For those who need a backend system for easy content management.' Price='~20,000' Website={true} Backend={true} Maintenance={true} Image='./images/price/Dynamic Dashboard.png'/>
+                <PricingCard Title='Ultimate Uptime' Descript='For those who need a fully-featured website with maintenance and support.' Price='~50,000' Website={true} Backend={true} Dashboard={true} Maintenance={true} Admin={true} Image='./images/price/Ultimate Uptime.png'/>
             </div>
         </div>
     );
